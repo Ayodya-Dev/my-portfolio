@@ -48,16 +48,6 @@ const GradientBorder = ({ children, className = "" }: { children: React.ReactNod
   </div>
 );
 
-// Floating Card Component
-const FloatingCard = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => (
-  <div 
-    className={`animate-float ${className}`}
-    style={{ animationDelay: `${delay}s` }}
-  >
-    {children}
-  </div>
-);
-
 // Tech Badge Component
 const TechBadge = ({ children }: { children: React.ReactNode }) => (
   <span className="px-3 py-1 text-xs font-medium rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500/20 transition-colors">
@@ -278,76 +268,20 @@ export default function Home() {
             {/* Right Content - Visual */}
             <div className="order-1 lg:order-2 flex justify-center">
               <div className="relative">
-                {/* Main Circle with Gradient Border */}
-                <GradientBorder className="w-80 h-80 md:w-96 md:h-96">
-                  <div className="w-full h-full rounded-xl overflow-hidden relative">
-                    <img 
-                      src="/mypic.jpg" 
-                      alt="Ayodya Sasanka"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1c]/80 via-transparent to-transparent" />
-                    <div className="absolute bottom-6 left-0 right-0 text-center z-10">
-                      <p className="text-2xl font-bold text-white">Ayodya Sasanka</p>
-                      <p className="text-cyan-400">Software Engineer</p>
-                    </div>
-                    
-                    {/* Orbiting Elements */}
-                    <div className="absolute inset-0 animate-spin-slow">
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-xl glass flex items-center justify-center border-cyan-500/30">
-                        <Terminal className="w-6 h-6 text-cyan-400" />
-                      </div>
-                    </div>
-                    <div className="absolute inset-0 animate-spin-slow-reverse">
-                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-12 h-12 rounded-xl glass flex items-center justify-center border-cyan-500/30">
-                        <Database className="w-6 h-6 text-cyan-400" />
-                      </div>
-                    </div>
-                  </div>
-                </GradientBorder>
-
-                {/* Floating Cards */}
-                <FloatingCard delay={0} className="absolute -right-20 top-1/4 z-20">
-                  <div className="glass p-3 rounded-xl border-cyan-500/30 glow-cyan">
-                    <div className="flex items-center gap-2">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center border border-cyan-500/30 overflow-hidden">
-                        <img src="/codexeed.png" alt="Codexeed" className="w-6 h-6 object-contain" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white text-sm">Founder & CEO</p>
-                        <p className="text-xs text-cyan-400">Codexeed</p>
-                      </div>
-                    </div>
-                  </div>
-                </FloatingCard>
-
-                <FloatingCard delay={0.5} className="absolute -right-20 bottom-1/4 z-20">
-                  <div className="glass p-3 rounded-xl border-purple-500/30 glow-cyan">
-                    <div className="flex items-center gap-2">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center border border-purple-500/30">
-                        <Gamepad2 className="w-5 h-5 text-purple-400" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white text-sm">Founder & CEO</p>
-                        <p className="text-xs text-purple-400">GameXeed</p>
-                      </div>
-                    </div>
-                  </div>
-                </FloatingCard>
-
-                <FloatingCard delay={1} className="absolute -left-16 bottom-1/4 z-20">
-                  <div className="glass p-3 rounded-xl border-cyan-500/30 glow-cyan">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center border border-cyan-500/30">
-                        <GraduationCap className="w-4 h-4 text-cyan-400" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white text-sm">Student</p>
-                        <p className="text-xs text-cyan-400">Cardiff Met</p>
-                      </div>
-                    </div>
-                  </div>
-                </FloatingCard>
+                {/* Circular Profile Image */}
+                <div className="w-72 h-72 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-slate-700">
+                  <img 
+                    src="/mypic.jpg" 
+                    alt="Ayodya Sasanka"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                {/* Simple Badge */}
+                <div className="absolute bottom-0 right-4 bg-slate-800 border border-slate-600 px-4 py-2 rounded-lg">
+                  <p className="text-sm font-medium text-white">Ayodya Sasanka</p>
+                  <p className="text-xs text-cyan-400">Software Engineer</p>
+                </div>
               </div>
             </div>
           </div>

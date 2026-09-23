@@ -319,6 +319,107 @@ html {
   background-size: 50px 50px;
 }
 
+/* Hero editorial grid — large rounded squares */
+.hero-panel-grid {
+  background-image: url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='4' y='4' width='64' height='64' rx='14' fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 72px 72px;
+}
+
+.hero-portrait-mask {
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to bottom, #000 58%, transparent 100%);
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to bottom, #000 58%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
+
+.hero-portrait-glow {
+  filter: drop-shadow(0 0 24px rgba(6, 182, 212, 0.35));
+}
+
+@keyframes hero-glow-pulse {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.animate-hero-glow {
+  animation: hero-glow-pulse 6s ease-in-out infinite;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-rise {
+  animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes tech-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-tech-marquee {
+  animation: tech-marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-tech-marquee {
+    animation: none;
+  }
+}
+
+/* Story section pushpin */
+.story-pin {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  z-index: 30;
+  width: 18px;
+  height: 18px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #5a5a5a 0%, #1a1a1a 55%, #000 100%);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+.story-pin::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 3px;
+  height: 8px;
+  transform: translateX(-50%);
+  border-radius: 0 0 2px 2px;
+  background: linear-gradient(180deg, #333, #111);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
 /* Dot Pattern */
 .bg-dots {
   background-image: radial-gradient(rgba(56, 189, 248, 0.15) 1px, transparent 1px);

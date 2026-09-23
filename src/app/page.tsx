@@ -1,32 +1,62 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   Github,
   Linkedin,
   Mail,
-  Code2,
   GraduationCap,
-  Building2,
-  User,
   Send,
-  ChevronDown,
   Menu,
   X,
-  Sparkles,
-  Terminal,
-  Database,
-  Globe,
-  Zap,
   ArrowRight,
   MapPin,
   Calendar,
-  Gamepad2,
-  type LucideIcon,
+  Download,
+  ExternalLink,
 } from "lucide-react";
-import Link from "next/link";
+import Image from "next/image";
+
+const techStack = [
+  "node.js",
+  "redis",
+  "NEXT.js",
+  "aws",
+  "GraphQL",
+  "TypeScript",
+  "PostgreSQL",
+  "React",
+  "MongoDB",
+  "Docker",
+  "Python",
+  "Tailwind",
+  "Prisma",
+  "Firebase",
+  "Git",
+  "Expo",
+];
+
+const projects = [
+  {
+    title: "Codexeed",
+    description:
+      "Software company platform for custom web and mobile products — clean architecture, fast delivery, and scalable builds for modern teams.",
+    logo: "/codexeed.png",
+    href: "https://codexeed.com",
+    tags: ["Web Development", "Mobile Apps", "UI/UX", "Consulting"],
+    accent: "cyan" as const,
+  },
+  {
+    title: "GameXeed",
+    description:
+      "Full-featured game sales and distribution platform connecting players with PC and console titles at competitive prices.",
+    logo: "/Gamexeed21.png",
+    href: "#contact",
+    tags: ["E-Commerce", "Gaming", "Digital Sales", "Community"],
+    accent: "lime" as const,
+  },
+];
 
 // Shimmer Button Component
 const ShimmerButton = ({ children, onClick, className = "" }: { children: React.ReactNode; onClick?: () => void; className?: string }) => (
@@ -55,24 +85,6 @@ const TechBadge = ({ children }: { children: React.ReactNode }) => (
   </span>
 );
 
-// Skill Card Component
-const SkillCard = ({ icon: Icon, title, skills, delay = 0 }: { icon: LucideIcon; title: string; skills: string[]; delay?: number }) => (
-  <div 
-    className="group glass p-6 rounded-2xl hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 animate-scale-in"
-    style={{ animationDelay: `${delay}s`, animationFillMode: 'forwards' }}
-  >
-    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-cyan-500/30">
-      <Icon className="w-6 h-6 text-cyan-400" />
-    </div>
-    <h3 className="text-lg font-bold mb-4 text-white">{title}</h3>
-    <div className="flex flex-wrap gap-2">
-      {skills.map((skill) => (
-        <TechBadge key={skill}>{skill}</TechBadge>
-      ))}
-    </div>
-  </div>
-);
-
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
@@ -85,7 +97,7 @@ export default function Home() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
       
-      const sections = ["hero", "about", "education", "company", "skills", "contact"];
+      const sections = ["hero", "about", "education", "company", "contact"];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -116,7 +128,6 @@ export default function Home() {
     { id: "about", label: "About" },
     { id: "education", label: "Education" },
     { id: "company", label: "Company" },
-    { id: "skills", label: "Skills" },
     { id: "contact", label: "Contact" },
   ];
 
@@ -141,13 +152,9 @@ export default function Home() {
         isScrolled ? "glass-strong shadow-lg shadow-cyan-500/5" : "bg-transparent"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <Link href="/" className="text-2xl font-bold gradient-text">
-              {'<AS/>'}
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1 glass rounded-full px-2 py-1">
+          <div className="relative flex items-center justify-end h-20">
+            {/* Desktop Navigation — centered */}
+            <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-1 glass rounded-full px-2 py-1">
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -164,7 +171,6 @@ export default function Home() {
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
-              <ThemeToggle />
               <ShimmerButton 
                 onClick={() => scrollToSection("contact")}
                 className="rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white border-0"
@@ -174,8 +180,7 @@ export default function Home() {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="flex items-center md:hidden space-x-4">
-              <ThemeToggle />
+            <div className="flex items-center md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-2 rounded-lg glass"
@@ -211,147 +216,194 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section id="hero" className="min-h-screen flex items-center justify-center pt-20 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="space-y-8 order-2 lg:order-1">
-              <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass border-cyan-500/30">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                <span className="text-sm font-medium text-cyan-400">Available for opportunities</span>
-              </div>
-              
-              <div className="space-y-4">
-                <p className="text-lg text-slate-400 animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'forwards', opacity: 0 }}>
-                  Hello, I&apos;m
-                </p>
-                <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
-                  <span className="block text-white animate-slide-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards', opacity: 0 }}>
-                    Ayodya
+      <section
+        id="hero"
+        className="relative min-h-screen flex flex-col overflow-hidden bg-[#0a0f1c]"
+      >
+        {/* Atmosphere */}
+        <div className="absolute inset-0 hero-panel-grid pointer-events-none" />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 80% at 78% 40%, rgba(6, 182, 212, 0.28) 0%, rgba(37, 99, 235, 0.14) 35%, transparent 65%), linear-gradient(180deg, #0a0f1c 0%, #070b14 70%, #05080f 100%)",
+          }}
+        />
+        <div className="absolute right-0 top-1/4 w-[55%] h-[70%] rounded-full bg-cyan-500/20 blur-[120px] animate-hero-glow pointer-events-none" />
+
+        <div className="relative z-10 flex-1 flex items-center pt-24 pb-8">
+          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
+              {/* Left — copy */}
+              <div className="space-y-6 lg:space-y-8 order-2 lg:order-1 max-w-xl">
+                <h1
+                  className="text-4xl sm:text-5xl md:text-[3.25rem] lg:text-6xl font-bold tracking-tight leading-[1.12] animate-hero-rise"
+                  style={{ animationDelay: "0.1s" }}
+                >
+                  <span className="block text-white mb-3 sm:mb-4">
+                    Ayodya Sasanka
                   </span>
-                  <span className="block gradient-text animate-slide-up" style={{ animationDelay: '0.6s', animationFillMode: 'forwards', opacity: 0 }}>
-                    Sasanka
+                  <span className="block text-[0.72em] sm:text-[0.68em] font-semibold text-white/50 leading-[1.25]">
+                    Engineering{" "}
+                    <span className="text-white">scalable architecture</span>{" "}
+                    for modern <span className="text-white">enterprises</span>
                   </span>
                 </h1>
-                <p className="text-xl md:text-2xl text-slate-400 max-w-lg animate-slide-up" style={{ animationDelay: '0.8s', animationFillMode: 'forwards', opacity: 0 }}>
-                  Software Engineering Student & Founder
-                </p>
-              </div>
-              
-              <div className="flex flex-wrap gap-4 animate-slide-up" style={{ animationDelay: '1s', animationFillMode: 'forwards', opacity: 0 }}>
-                <Button 
-                  size="lg" 
-                  className="rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white shadow-lg shadow-cyan-500/25 group border-0"
-                  onClick={() => scrollToSection("contact")}
+
+                <p
+                  className="text-base sm:text-lg text-white/45 leading-relaxed max-w-md animate-hero-rise"
+                  style={{ animationDelay: "0.3s" }}
                 >
-                  <Send className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
-                  Let&apos;s Talk
-                </Button>
-              </div>
+                  Full-Stack Software Engineer specializing in performant React
+                  applications, robust Node.js backend systems, and cloud
+                  optimization.
+                </p>
 
-              <div className="flex items-center gap-4 animate-slide-up" style={{ animationDelay: '1.2s', animationFillMode: 'forwards', opacity: 0 }}>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" 
-                   className="p-3 rounded-xl glass hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 group">
-                  <Github className="w-5 h-5 text-slate-400 group-hover:text-cyan-400" />
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" 
-                   className="p-3 rounded-xl glass hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 group">
-                  <Linkedin className="w-5 h-5 text-slate-400 group-hover:text-cyan-400" />
-                </a>
-                <a href="mailto:ayodya@codexeed.com" 
-                   className="p-3 rounded-xl glass hover:bg-cyan-500/20 hover:border-cyan-500/50 transition-all duration-300 group">
-                  <Mail className="w-5 h-5 text-slate-400 group-hover:text-cyan-400" />
-                </a>
-              </div>
-            </div>
-
-            {/* Right Content - Visual */}
-            <div className="order-1 lg:order-2 flex justify-center">
-              <div className="relative">
-                {/* Circular Profile Image */}
-                <div className="w-72 h-72 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-slate-700">
-                  <img 
-                    src="/mypic.jpg" 
-                    alt="Ayodya Sasanka"
-                    className="w-full h-full object-cover"
-                  />
+                <div
+                  className="flex flex-wrap gap-3 pt-1 animate-hero-rise"
+                  style={{ animationDelay: "0.45s" }}
+                >
+                  <Button
+                    size="lg"
+                    onClick={() => scrollToSection("contact")}
+                    className="h-12 rounded-lg bg-white text-black hover:bg-white/90 px-7 text-sm font-semibold border-0 shadow-none"
+                  >
+                    Let&apos;s Talk
+                  </Button>
+                  <Button
+                    size="lg"
+                    asChild
+                    className="h-12 rounded-lg bg-transparent text-white border border-white/40 hover:bg-white/10 hover:text-white px-6 text-sm font-medium shadow-none"
+                  >
+                    <a href="/resume.pdf" download>
+                      Download Resume
+                      <Download className="w-4 h-4" />
+                    </a>
+                  </Button>
                 </div>
-                
-                {/* Simple Badge */}
-                <div className="absolute bottom-0 right-4 bg-slate-800 border border-slate-600 px-4 py-2 rounded-lg">
-                  <p className="text-sm font-medium text-white">Ayodya Sasanka</p>
-                  <p className="text-xs text-cyan-400">Software Engineer</p>
+              </div>
+
+              {/* Right — portrait */}
+              <div
+                className="order-1 lg:order-2 relative flex justify-center lg:justify-end animate-hero-rise"
+                style={{ animationDelay: "0.3s" }}
+              >
+                <div className="relative w-full max-w-[420px] sm:max-w-[500px] lg:max-w-[580px] aspect-[3/4] isolate">
+                  <div className="absolute inset-x-[5%] top-[10%] bottom-[15%] -z-10 rounded-full bg-cyan-500/30 blur-[100px] animate-hero-glow pointer-events-none" />
+                  <div className="relative z-10 hero-portrait-mask h-full">
+                    <Image
+                      src="/my.png"
+                      alt="Ayodya Sasanka"
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 90vw, 580px"
+                      className="object-contain object-bottom"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <button
-          onClick={() => scrollToSection("about")}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce"
-        >
-          <ChevronDown className="w-6 h-6 text-cyan-400" />
-        </button>
+        {/* Tech stack bar */}
+        <div className="relative z-10 border-t border-white/5 bg-black overflow-hidden">
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 z-10 bg-gradient-to-r from-black to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-24 z-10 bg-gradient-to-l from-black to-transparent" />
+          <div className="flex w-max animate-tech-marquee hover:[animation-play-state:paused] py-5">
+            {[0, 1].map((copy) => (
+              <ul
+                key={copy}
+                className="flex items-center gap-10 sm:gap-14 md:gap-16 px-5 sm:px-7"
+                aria-hidden={copy === 1}
+              >
+                {techStack.map((tech) => (
+                  <li
+                    key={`${copy}-${tech}`}
+                    className="shrink-0 text-[13px] sm:text-sm font-medium tracking-wide text-white/35 hover:text-white/55 transition-colors select-none"
+                  >
+                    {tech}
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-24 md:py-32 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl blur-2xl" />
-              <div className="relative glass rounded-3xl p-8 md:p-12 border-cyan-500/20">
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="text-center p-6 glass rounded-2xl border-cyan-500/20 hover:border-cyan-500/50 transition-colors group">
-                    <p className="text-4xl font-bold gradient-text mb-2 group-hover:scale-110 transition-transform">2+</p>
-                    <p className="text-sm text-slate-400">Years Experience</p>
-                  </div>
-                  <div className="text-center p-6 glass rounded-2xl border-cyan-500/20 hover:border-cyan-500/50 transition-colors group">
-                    <p className="text-4xl font-bold gradient-text mb-2 group-hover:scale-110 transition-transform">10+</p>
-                    <p className="text-sm text-slate-400">Projects</p>
-                  </div>
-                  <div className="text-center p-6 glass rounded-2xl border-cyan-500/20 hover:border-cyan-500/50 transition-colors group">
-                    <p className="text-4xl font-bold gradient-text mb-2 group-hover:scale-110 transition-transform">5+</p>
-                    <p className="text-sm text-slate-400">Happy Clients</p>
-                  </div>
-                  <div className="text-center p-6 glass rounded-2xl border-cyan-500/20 hover:border-cyan-500/50 transition-colors group">
-                    <p className="text-4xl font-bold gradient-text mb-2 group-hover:scale-110 transition-transform">2</p>
-                    <p className="text-sm text-slate-400">Companies Founded</p>
-                  </div>
+      {/* About / My Story */}
+      <section
+        id="about"
+        className="relative overflow-hidden py-24 md:py-32"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent pointer-events-none" />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="origin-center -rotate-2 md:-rotate-3 text-center">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-8 md:mb-10 animate-hero-rise">
+              My Story
+            </h2>
+
+            <div
+              className="mx-auto max-w-2xl space-y-5 text-left text-base sm:text-lg leading-relaxed text-slate-400 animate-hero-rise"
+              style={{ animationDelay: "0.15s" }}
+            >
+              <p>
+                I&apos;m{" "}
+                <span className="font-semibold text-white">Ayodya Sasanka</span>
+                , a software engineering student at Cardiff Metropolitan
+                University and founder building products that people actually
+                use. My path started with curiosity about how software works —
+                and grew into shipping real systems for clients and communities.
+              </p>
+              <p>
+                As Founder &amp; CEO of{" "}
+                <span className="font-semibold text-cyan-400">Codexeed</span>, I
+                lead web and mobile builds with a focus on clean architecture
+                and performance. Through{" "}
+                <span className="font-semibold text-cyan-400">GameXeed</span>, I
+                also serve gamers with accessible game distribution. I care
+                about craft, clarity, and turning ideas into dependable software.
+              </p>
+            </div>
+          </div>
+
+          {/* Polaroid cluster */}
+          <div
+            className="relative mx-auto mt-16 md:mt-20 h-[340px] sm:h-[400px] md:h-[460px] max-w-xl animate-hero-rise"
+            style={{ animationDelay: "0.3s" }}
+          >
+            {/* Left polaroid */}
+            <figure className="absolute left-[2%] sm:left-[8%] top-4 w-[48%] sm:w-[46%] max-w-[240px] rotate-[-8deg] z-10 transition-transform duration-500 hover:-rotate-6 hover:-translate-y-1">
+              <div className="relative bg-[#f4f4f4] p-2.5 pb-10 sm:p-3 sm:pb-12 shadow-[0_18px_50px_rgba(0,0,0,0.55)]">
+                <span className="story-pin" aria-hidden />
+                <div className="relative aspect-[3/4] overflow-hidden bg-neutral-800">
+                  <Image
+                    src="/my.png"
+                    alt="Ayodya Sasanka portrait"
+                    fill
+                    sizes="240px"
+                    className="object-cover object-[center_20%] grayscale contrast-125"
+                  />
                 </div>
               </div>
-            </div>
+            </figure>
 
-            <div>
-              <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass border-cyan-500/30 text-cyan-400 text-sm mb-6">
-                <User className="w-4 h-4" />
-                <span>About Me</span>
+            {/* Right polaroid */}
+            <figure className="absolute right-[2%] sm:right-[6%] top-16 sm:top-20 w-[50%] sm:w-[48%] max-w-[260px] rotate-[7deg] z-20 transition-transform duration-500 hover:rotate-5 hover:-translate-y-1">
+              <div className="relative bg-[#f4f4f4] p-2.5 pb-10 sm:p-3 sm:pb-12 shadow-[0_22px_55px_rgba(0,0,0,0.6)]">
+                <span className="story-pin" aria-hidden />
+                <div className="relative aspect-[3/4] overflow-hidden bg-neutral-800">
+                  <Image
+                    src="/my.png"
+                    alt="Ayodya Sasanka"
+                    fill
+                    sizes="260px"
+                    className="object-cover object-[center_10%] grayscale contrast-125 scale-110"
+                  />
+                </div>
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight text-white">
-                Crafting Digital
-                <span className="gradient-text"> Excellence</span>
-              </h2>
-              <div className="space-y-4 text-lg text-slate-400">
-                <p>
-                  Hi! I&apos;m <span className="text-white font-semibold">Ayodya Sasanka</span>, a passionate Software Engineering student at Cardiff Metropolitan University. My journey in tech started with curiosity and has evolved into a mission to create impactful software solutions.
-                </p>
-                <p>
-                  As the Founder & CEO of <span className="text-cyan-400 font-semibold">Codexeed Software Company</span>, I lead a talented team in delivering cutting-edge web and mobile applications. Additionally, I&apos;m the Founder & CEO of <span className="text-purple-400 font-semibold">GameXeed</span>, a computer game selling company serving the gaming community.
-                </p>
-                <p>
-                  I believe in writing clean, efficient code and building products that make a difference. Whether it&apos;s a complex enterprise solution, an innovative startup idea, or a gaming platform, I bring dedication and expertise to every project.
-                </p>
-              </div>
-              
-              <div className="flex flex-wrap gap-3 mt-8">
-                {["Problem Solver", "Team Leader", "Innovation Driven", "Detail Oriented"].map((tag) => (
-                  <span key={tag} className="px-4 py-2 rounded-full glass text-sm font-medium text-slate-300 hover:text-cyan-400 hover:border-cyan-500/50 transition-all cursor-default">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+            </figure>
           </div>
         </div>
       </section>
@@ -435,187 +487,282 @@ export default function Home() {
       </section>
 
       {/* Companies Section */}
-      <section id="company" className="py-24 md:py-32 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass border-cyan-500/30 text-cyan-400 text-sm mb-6">
-              <Building2 className="w-4 h-4" />
-              <span>My Companies</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold text-white">
-              Founder & CEO of <span className="gradient-text">Multiple Ventures</span>
+      <section id="company" className="py-24 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/[0.04] to-transparent pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mb-20 md:mb-24">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+              Founder &amp; CEO of{" "}
+              <span className="gradient-text">two ventures</span>
             </h2>
+            <p className="mt-5 text-lg text-slate-400 max-w-xl">
+              Building software products and gaming experiences — from client
+              systems to community platforms.
+            </p>
           </div>
 
-          {/* Codexeed */}
-          <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
-            <div className="order-2 lg:order-1">
-              <h3 className="text-3xl md:text-4xl font-bold mb-6 leading-tight text-white">
-                <span className="gradient-text">Codexeed</span> Software
-              </h3>
-              <div className="space-y-4 text-lg text-slate-400 mb-8">
-                <p>
-                  Codexeed Software Company represents my vision of creating technology that empowers businesses and individuals. As the founder and CEO, I&apos;ve built a team of passionate developers dedicated to excellence.
+          {/* Codexeed details */}
+          <article className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-24 md:mb-28">
+            <div className="lg:col-span-7 space-y-8">
+              <div>
+                <p className="text-sm font-medium tracking-[0.18em] uppercase text-cyan-400/80 mb-3">
+                  Software
                 </p>
-                <p>
-                  We specialize in custom software development, web applications, mobile apps, and digital transformation consulting. Our mission is to turn innovative ideas into scalable, robust solutions.
-                </p>
-              </div>
-              
-              <div className="space-y-4 mb-8">
-                {[
-                  { icon: Globe, text: "Web Development" },
-                  { icon: Code2, text: "Mobile Applications" },
-                  { icon: Sparkles, text: "UI/UX Design" },
-                  { icon: Zap, text: "Digital Consulting" },
-                ].map(({ icon: Icon, text }) => (
-                  <div key={text} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center border border-cyan-500/30">
-                      <Icon className="w-5 h-5 text-cyan-400" />
-                    </div>
-                    <span className="font-medium text-white">{text}</span>
-                  </div>
-                ))}
+                <h3 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+                  Codexeed
+                </h3>
               </div>
 
-              <ShimmerButton className="rounded-full bg-gradient-to-r from-cyan-500 to-blue-500">
-                Visit Codexeed
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </ShimmerButton>
+              <p className="text-lg text-slate-400 leading-relaxed max-w-xl">
+                Custom web and mobile products for teams that need clean
+                architecture, fast delivery, and software that scales. I lead
+                design and engineering from idea to launch.
+              </p>
+
+              <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-300">
+                {["Web Development", "Mobile Apps", "UI/UX", "Consulting"].map(
+                  (item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="h-1 w-1 rounded-full bg-cyan-400" />
+                      {item}
+                    </li>
+                  )
+                )}
+              </ul>
+
+              <div>
+                <Button
+                  asChild
+                  size="lg"
+                  className="h-12 rounded-lg bg-white text-black hover:bg-white/90 px-7 text-sm font-semibold border-0 shadow-none"
+                >
+                  <a
+                    href="https://codexeed.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Visit Codexeed
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </Button>
+              </div>
             </div>
 
-            <div className="order-1 lg:order-2">
+            <div className="lg:col-span-5">
               <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl blur-2xl" />
-                <div className="relative glass rounded-3xl p-8 border-cyan-500/20">
-                  <div className="flex justify-center mb-6">
-                    <img src="/codexeed.png" alt="Codexeed Logo" className="h-20 w-auto object-contain" />
+                <div className="absolute -inset-6 bg-cyan-500/15 blur-[80px] rounded-full pointer-events-none" />
+                <div className="relative border-t border-white/10 pt-8">
+                  <div className="flex items-center gap-4 mb-10">
+                    <Image
+                      src="/codexeed.png"
+                      alt="Codexeed"
+                      width={56}
+                      height={56}
+                      className="h-14 w-auto object-contain"
+                    />
+                    <div>
+                      <p className="text-white font-semibold text-lg">Codexeed</p>
+                      <p className="text-slate-500 text-sm">Software Company</p>
+                    </div>
                   </div>
-                  <div className="text-center mb-8">
-                    <h3 className="text-3xl font-bold mb-2 gradient-text">Codexeed</h3>
-                    <p className="text-cyan-400">Software Company</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
+
+                  <dl className="grid grid-cols-2 gap-x-8 gap-y-8">
                     {[
                       { label: "Clients", value: "5+" },
-                      { label: "Team Size", value: "5+" },
-                      { label: "Success Rate", value: "100%" },
-                      { label: "Experience", value: "2+ yrs" },
+                      { label: "Team", value: "5+" },
+                      { label: "Success", value: "100%" },
+                      { label: "Years", value: "2+" },
                     ].map(({ label, value }) => (
-                      <div key={label} className="text-center p-4 glass rounded-xl border-cyan-500/20 hover:border-cyan-500/50 transition-colors group">
-                        <p className="text-2xl font-bold gradient-text group-hover:scale-110 transition-transform">{value}</p>
-                        <p className="text-sm text-slate-400">{label}</p>
+                      <div key={label}>
+                        <dt className="text-xs uppercase tracking-wider text-slate-500 mb-1">
+                          {label}
+                        </dt>
+                        <dd className="text-3xl md:text-4xl font-bold gradient-text">
+                          {value}
+                        </dd>
                       </div>
                     ))}
-                  </div>
+                  </dl>
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
-          {/* GameXeed */}
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="order-1">
+          {/* GameXeed details */}
+          <article className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end mb-24 md:mb-28">
+            <div className="lg:col-span-5 order-2 lg:order-1">
               <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-2xl" />
-                <div className="relative glass rounded-3xl p-8 border-purple-500/20">
-                  <div className="flex justify-center mb-6">
-                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500/30 to-pink-500/30 flex items-center justify-center border border-purple-500/50">
-                      <Gamepad2 className="w-12 h-12 text-purple-400" />
+                <div className="absolute -inset-6 bg-sky-500/10 blur-[80px] rounded-full pointer-events-none" />
+                <div className="relative border-t border-white/10 pt-8">
+                  <div className="flex items-center gap-4 mb-10">
+                    <Image
+                      src="/Gamexeed21.png"
+                      alt="GameXeed"
+                      width={56}
+                      height={56}
+                      className="h-14 w-auto object-contain"
+                    />
+                    <div>
+                      <p className="text-white font-semibold text-lg">GameXeed</p>
+                      <p className="text-slate-500 text-sm">Gaming Company</p>
                     </div>
                   </div>
-                  <div className="text-center mb-8">
-                    <h3 className="text-3xl font-bold mb-2 text-purple-400">GameXeed</h3>
-                    <p className="text-purple-300">Gaming Company</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
+
+                  <dl className="grid grid-cols-2 gap-x-8 gap-y-8">
                     {[
-                      { label: "Games Sold", value: "100+" },
-                      { label: "Happy Gamers", value: "50+" },
-                      { label: "Platforms", value: "PC/Console" },
-                      { label: "Experience", value: "1+ yr" },
+                      { label: "Games sold", value: "100+" },
+                      { label: "Gamers", value: "50+" },
+                      { label: "Platforms", value: "PC" },
+                      { label: "Years", value: "1+" },
                     ].map(({ label, value }) => (
-                      <div key={label} className="text-center p-4 glass rounded-xl border-purple-500/20 hover:border-purple-500/50 transition-colors group">
-                        <p className="text-2xl font-bold text-purple-400 group-hover:scale-110 transition-transform">{value}</p>
-                        <p className="text-sm text-slate-400">{label}</p>
+                      <div key={label}>
+                        <dt className="text-xs uppercase tracking-wider text-slate-500 mb-1">
+                          {label}
+                        </dt>
+                        <dd className="text-3xl md:text-4xl font-bold text-sky-300">
+                          {value}
+                        </dd>
                       </div>
                     ))}
-                  </div>
+                  </dl>
                 </div>
               </div>
             </div>
 
-            <div className="order-2">
-              <h3 className="text-3xl md:text-4xl font-bold mb-6 leading-tight text-white">
-                <span className="text-purple-400">GameXeed</span>
-              </h3>
-              <div className="space-y-4 text-lg text-slate-400 mb-8">
-                <p>
-                  GameXeed is my venture into the gaming industry. As the Founder and CEO, I&apos;m building a platform for computer game sales and distribution, connecting gamers with the best titles.
+            <div className="lg:col-span-7 order-1 lg:order-2 space-y-8 lg:text-right lg:flex lg:flex-col lg:items-end">
+              <div>
+                <p className="text-sm font-medium tracking-[0.18em] uppercase text-sky-300/80 mb-3">
+                  Gaming
                 </p>
-                <p>
-                  We specialize in selling computer games across multiple platforms, providing gamers with easy access to their favorite titles at competitive prices.
-                </p>
+                <h3 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+                  GameXeed
+                </h3>
               </div>
-              
-              <div className="space-y-4 mb-8">
+
+              <p className="text-lg text-slate-400 leading-relaxed max-w-xl">
+                A game sales and distribution venture connecting players with
+                PC and console titles — simple checkout, fair pricing, and a
+                growing community of gamers.
+              </p>
+
+              <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-300 lg:justify-end">
                 {[
-                  { icon: Gamepad2, text: "PC Games Sales" },
-                  { icon: Globe, text: "Console Games" },
-                  { icon: Zap, text: "Digital Distribution" },
-                  { icon: Sparkles, text: "Gaming Community" },
-                ].map(({ icon: Icon, text }) => (
-                  <div key={text} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center border border-purple-500/30">
-                      <Icon className="w-5 h-5 text-purple-400" />
-                    </div>
-                    <span className="font-medium text-white">{text}</span>
-                  </div>
+                  "PC Games",
+                  "Console",
+                  "Digital Sales",
+                  "Community",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="h-1 w-1 rounded-full bg-sky-300" />
+                    {item}
+                  </li>
                 ))}
+              </ul>
+
+              <div>
+                <Button
+                  size="lg"
+                  asChild
+                  className="h-12 rounded-lg bg-transparent text-white border border-white/40 hover:bg-white/10 hover:text-white px-7 text-sm font-medium shadow-none"
+                >
+                  <a href="#contact">
+                    Visit GameXeed
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </Button>
               </div>
-
-              <ShimmerButton className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500">
-                Visit GameXeed
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </ShimmerButton>
             </div>
-          </div>
-        </div>
-      </section>
+          </article>
 
-      {/* Skills Section */}
-      <section id="skills" className="py-24 md:py-32 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass border-cyan-500/30 text-cyan-400 text-sm mb-6">
-              <Zap className="w-4 h-4" />
-              <span>Skills</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold text-white">
-              Technical <span className="gradient-text">Expertise</span>
-            </h2>
-          </div>
+          {/* Site showcase cards */}
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+            {projects.map((project) => {
+              const isExternal = project.href.startsWith("http");
+              return (
+                <a
+                  key={project.title}
+                  href={project.href}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                  onClick={
+                    !isExternal
+                      ? (e) => {
+                          e.preventDefault();
+                          scrollToSection("contact");
+                        }
+                      : undefined
+                  }
+                  className="group relative flex flex-col overflow-hidden rounded-2xl bg-[#0d1526] border border-white/10 hover:border-cyan-500/40 transition-all duration-300 hover:shadow-[0_0_40px_rgba(6,182,212,0.12)]"
+                >
+                  <div
+                    className={`relative aspect-[16/10] overflow-hidden ${
+                      project.accent === "lime"
+                        ? "bg-[#050805]"
+                        : "bg-[#060a12]"
+                    }`}
+                  >
+                    <div
+                      className={`absolute inset-0 ${
+                        project.accent === "lime"
+                          ? "bg-[radial-gradient(ellipse_at_center,rgba(57,255,20,0.18)_0%,transparent_65%)]"
+                          : "bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.2)_0%,transparent_65%)]"
+                      }`}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center p-10 sm:p-14">
+                      <Image
+                        src={project.logo}
+                        alt={`${project.title} logo`}
+                        width={320}
+                        height={120}
+                        className="relative z-10 w-full max-w-[260px] h-auto object-contain drop-shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { category: "Frontend", icon: Globe, skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML5/CSS3"], color: "from-cyan-500/20" },
-              { category: "Backend", icon: Database, skills: ["Node.js", "Python", "PostgreSQL", "MongoDB", "REST APIs"], color: "from-blue-500/20" },
-              { category: "Tools", icon: Terminal, skills: ["Git", "Docker", "AWS", "Figma", "VS Code"], color: "from-purple-500/20" },
-              { category: "Mobile", icon: Code2, skills: ["React Native", "Expo", "Responsive Design", "PWA"], color: "from-orange-500/20" },
-              { category: "Soft Skills", icon: User, skills: ["Leadership", "Communication", "Problem Solving", "Agile/Scrum"], color: "from-pink-500/20" },
-              { category: "Learning", icon: Sparkles, skills: ["AI/ML", "Cloud Architecture", "System Design", "DevOps"], color: "from-yellow-500/20" },
-            ].map((group, index) => (
-              <SkillCard
-                key={group.category}
-                icon={group.icon}
-                title={group.category}
-                skills={group.skills}
-                delay={index * 0.1}
-              />
-            ))}
+                    <span
+                      className={`absolute top-1/2 left-1/2 z-20 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 ${
+                        project.accent === "lime"
+                          ? "bg-black/80 border-lime-400/50 text-lime-300"
+                          : "bg-white text-black border-white"
+                      }`}
+                    >
+                      {isExternal ? (
+                        <ExternalLink className="w-5 h-5" />
+                      ) : (
+                        <ArrowRight className="w-5 h-5" />
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-1 flex-col p-6 sm:p-7 border-t border-white/5">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-slate-400 leading-relaxed mb-6 flex-1">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-3 py-1 text-xs font-medium rounded-full border border-white/15 text-slate-300 bg-white/[0.03]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <span
+                    className={`pointer-events-none absolute inset-x-0 bottom-0 h-px ${
+                      project.accent === "lime"
+                        ? "bg-gradient-to-r from-transparent via-lime-400/70 to-transparent"
+                        : "bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent"
+                    }`}
+                  />
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>
